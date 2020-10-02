@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Home</title>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css"
+          integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+    <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='css/styles.css') }}">
+</head>
+<body>
+<header>
+    <h2>Air Quality Index Prediction</h2>
+</header>
+{% if not show_prediction %}
+<div class="app-content">
+    <form action="{{ url_for('predict')}}" method="POST">
+        <div class="form-group">
+            <label for="commentArea">Add comment</label>
+            <textarea class="form-control col-md-2" id="commentArea" name="message" rows="1" cols="50"
+                      placeholder="Comment"></textarea>
+        </div>
+        <input type="submit" class="btn-info" value="Predict">
+    </form>
+</div>
+{% endif %}
+{% if show_prediction %}
+<div class="table-container all-padding">
+    {% for table in tables %}
+    {{ titles[loop.index] }}
+    {{ table|safe }}
+    {% endfor %}
+</div>
+<h2 class="align-info-header">Actual vs Predicted scatter plot</h2>
+<img src="/plot.png" alt="my plot" class="all-padding">
+<br/>
+<img src="/distplot.png" alt="distplot plot" class="all-padding">
+<br/>
+<div class="col-md-4 all-padding">
+	<table class="table">
+		<thead>
+			<tr>
+				<th scope="col">Result</th>
+                <th scope="col">Value</th>
+			</tr>
+		</thead>
+    <tbody>
+    <tr>
+        <th scope="row">Error</th>
+        <td>{{ errors }}</td>
+    </tr>
+    <tr>
+        <th scope="row">Mape</th>
+        <td>{{ mape }}</td>
+    </tr>
+    <tr>
+        <th scope="row">Accuracy</th>
+        <td>{{ accuracy }}</td>
+    </tr>
+    <tr>
+        <th scope="row">R2 score</th>
+        <td>{{ r2_score }}</td>
+    </tr>
+    <tr>
+        <th scope="row">RMSE</th>
+        <td>{{ rmse }}</td>
+    </tr>
+    </tbody>
+</table>
+</div>
+{% endif %}
+<script src="https://code.jquery.com/jquery-3.2.1.slim.min.js"
+        integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN"
+        crossorigin="anonymous"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js"
+        integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q"
+        crossorigin="anonymous"></script>
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"
+        integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl"
+        crossorigin="anonymous"></script>
+</body>
+</html>
